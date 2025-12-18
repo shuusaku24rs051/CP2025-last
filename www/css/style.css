@@ -198,8 +198,20 @@ textarea.form-control {
     gap: 8px;
     margin-left: auto;
 }
+.post-goodbad {
+    display: flex;
+    gap: 8px;
+    margin-right: auto;
+}
 
 .btn-edit, .btn-delete {
+    padding: 4px 8px;
+    font-size: 12px;
+    min-width: 60px;
+    border: none;
+    border-radius: 4px;
+}
+.btn-good, .btn-bad {
     padding: 4px 8px;
     font-size: 12px;
     min-width: 60px;
@@ -220,6 +232,10 @@ textarea.form-control {
 
 .editing .post-content {
     display: none;
+}
+
+.post-contentGB{
+    display: flex;
 }
 
 .editing .edit-form {

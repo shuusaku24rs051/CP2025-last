@@ -173,8 +173,12 @@ function createPostElement(post) {
             <button class="btn-delete" onclick="deletePost('${post.id}')">
                 削除
             </button>
+        </div>
+    ` : '';
 
-            <button class="btn-bad" onclick="startEdit('${post.id}')">
+    const actionsGB = canEdit ? `
+        <div class="post-goodbad">
+            <button class="btn-good" onclick="startEdit('${post.id}')">
                 Good
             </button>
             <button class="btn-bad" onclick="deletePost('${post.id}')">
@@ -191,6 +195,7 @@ function createPostElement(post) {
                 ${actions}
             </div>
             <div class="post-content">${escapeHtml(post.content)}</div>
+            <div class="post-contentGB">${actionsGB}</div>
             <div class="edit-form">
                 <textarea class="form-control" id="edit-${post.id}"></textarea>
                 <div class="button-group">
