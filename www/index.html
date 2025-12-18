@@ -173,6 +173,13 @@ function createPostElement(post) {
             <button class="btn-delete" onclick="deletePost('${post.id}')">
                 削除
             </button>
+
+            <button class="btn-bad" onclick="startEdit('${post.id}')">
+                Good
+            </button>
+            <button class="btn-bad" onclick="deletePost('${post.id}')">
+                Bad
+            </button>
         </div>
     ` : '';
 
