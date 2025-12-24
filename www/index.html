@@ -114,7 +114,10 @@ function createPost(author, content) {
         author: currentUser.email,
         content: content,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
-        userId: currentUser.uid
+        userId: currentUser.uid,
+        GC: 0,
+        BC: 0,
+        reaction:{}
     };
 
     postsRef.push(postData)
@@ -164,6 +167,9 @@ function canEditPost(post) {
 function createPostElement(post) {
     // 編集権限を確認
     const canEdit = canEditPost(post);
+
+    const userReaction = post.reaction?.[currentUser?.uid];
+
     // 編集権限があれば、編集・削除機能を表示
     const actions = canEdit ? `
         <div class="post-actions">
@@ -176,13 +182,16 @@ function createPostElement(post) {
         </div>
     ` : '';
 
-    const actionsGB = canEdit ? `
+
+    const actionsGB = currentUser ? `
         <div class="post-goodbad">
-            <button class="btn-good" onclick="startEdit('${post.id}')">
-                Good
+            <button class="btn-good ${userReaction === 'good' ? 'active' : ''}" onclick="reactionPost('${post.id}', 'good')">
+
+                Good <span>${post.GC || 0}</span>
             </button>
-            <button class="btn-bad" onclick="deletePost('${post.id}')">
-                Bad
+            <button class="btn-bad ${userReaction === 'bad' ? 'active' : ''}" onclick="reactionPost('${post.id}', 'bad')">
+
+                Bad <span>${post.BC || 0}</span>
             </button>
         </div>
     ` : '';
@@ -387,6 +396,43 @@ function deletePost(postId) {
     currentEditId = postId;
     showModal('deleteModal');
 }
+
+function reactionPost(postId, type) {
+    if (!currentUser) return;
+
+    const uid = currentUser.uid;
+    const postRef = postsRef.child(postId);
+
+    postRef.transaction((post) => {
+        if (!post) return post;
+
+        if (!post.reaction) post.reaction = {};
+        if (!post.GC) post.GC = 0;
+        if (!post.BC) post.BC = 0;
+
+        const previous = post.reaction[uid];
+
+
+        if (previous === type) {
+            if (type === 'good') post.GC--;
+            if (type === 'bad') post.BC--;
+
+            delete post.reaction[uid];
+            
+            return post;
+        }
+
+        if (previous === 'good') post.GC--;
+        if (previous === 'bad') post.BC--;
+
+        post.reaction[uid] = type;
+        if (type === 'good') post.GC++;
+        if (type === 'bad') post.BC++;
+
+        return post;
+    });
+}
+
 
 // 更新時のアニメーション
 function animateUpdate(postId) {
