@@ -218,6 +218,29 @@ textarea.form-control {
     border: none;
     border-radius: 4px;
 }
+.btn-good span,.btn-bad span {
+    font-weight: bold;
+}
+
+.btn-good {
+    background-color: rgb(255, 0, 200);
+    color: white;
+    cursor: pointer;
+}
+
+.btn-bad {
+    background-color: gray;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-good:hover {
+    background-color: rgb(235, 0, 180);
+}
+.btn-bad:hover {
+    background-color: black;
+}
+
 
 .post-author {
     font-weight: 600;
