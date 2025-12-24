@@ -381,7 +381,7 @@ function deletePost(postId) {
 
 function reactionPost(postId, type) {
     if (!currentUser) {
-        alert('ログインしてください');
+        showMessage('評価するにはログインが必要です', 'error');
         return;
     }
 
